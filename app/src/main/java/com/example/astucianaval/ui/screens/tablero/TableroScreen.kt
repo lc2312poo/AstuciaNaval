@@ -18,6 +18,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Pause
+
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -43,13 +46,14 @@ fun TableroScreen(
             )
     ) {
 
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 60.dp), // deja espacio para los indicadores flotantes
+                .padding(top = 70.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Título superior
+
             Text(
                 text = "🌊 Astucia Naval 🌊",
                 fontSize = 26.sp,
@@ -62,17 +66,16 @@ fun TableroScreen(
                 fontSize = 18.sp,
                 color = Color.White
             )
+            Spacer(modifier = Modifier.height(20.dp))
 
-            Spacer(modifier = Modifier.height(16.dp))
 
-            // Tablero principal
             BoxWithConstraints(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth()
                     .padding(horizontal = 24.dp),
                 contentAlignment = Alignment.Center
             ) {
-                val tableroSize = maxHeight * 0.85f
+                val tableroSize = maxHeight * 0.8f
 
                 Box(
                     modifier = Modifier
@@ -82,10 +85,8 @@ fun TableroScreen(
                         .padding(10.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        // Letras A–H
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
                         Row(
                             horizontalArrangement = Arrangement.SpaceEvenly,
                             modifier = Modifier
@@ -102,7 +103,7 @@ fun TableroScreen(
                             }
                         }
 
-                        // Números + celdas
+
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
@@ -123,7 +124,7 @@ fun TableroScreen(
 
                             Spacer(modifier = Modifier.width(6.dp))
 
-                            // Tablero azul
+
                             Box(
                                 modifier = Modifier
                                     .size(tableroSize * 0.9f)
@@ -153,7 +154,11 @@ fun TableroScreen(
                                                     Color.White.copy(alpha = 0.4f),
                                                     RoundedCornerShape(3.dp)
                                                 )
-                                                .clickable { cells[index] = !cells[index] },
+                                                .clickable {
+                                                    cells[index] = !cells[index]
+                                                    if (cells[index]) aciertos.value++
+                                                    else fallos.value++
+                                                },
                                             contentAlignment = Alignment.Center
                                         ) {
                                             if (isSelected) Text("💥", fontSize = 14.sp)
@@ -167,7 +172,6 @@ fun TableroScreen(
             }
         }
 
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -178,8 +182,20 @@ fun TableroScreen(
             EstadoBox(label = "Aciertos", value = aciertos.value, color = Color(0xFF00E676))
             EstadoBox(label = "Fallos", value = fallos.value, color = Color(0xFFFF5252))
         }
+
+
+        IconButton(onClick = { navController.navigate("pausa") }) {
+            Icon(Icons.Filled.Pause, contentDescription = "Pausar")
+        }
+            Icon(
+                imageVector = Icons.Default.Pause,
+                contentDescription = "Pausa",
+                tint = Color.White,
+                modifier = Modifier.size(28.dp)
+            )
+        }
     }
-}
+
 
 @Composable
 private fun EstadoBox(label: String, value: Int, color: Color) {
@@ -194,4 +210,3 @@ private fun EstadoBox(label: String, value: Int, color: Color) {
         Text(text = value.toString(), color = color, fontSize = 24.sp, fontWeight = FontWeight.Bold)
     }
 }
-

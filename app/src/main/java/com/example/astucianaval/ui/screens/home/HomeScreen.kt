@@ -34,8 +34,8 @@ fun HomeScreen(navController: NavController) {
                 )
 
 
-                Button(onClick = { navController.navigate(NavRoutes.Tablero.route) }) {
-                    Text("Ir al Tablero")
+                Button(onClick = { navController.navigate(NavRoutes.Dificultad.route) }) {
+                    Text("Jugar ")
                 }
 
                 Button(onClick = { navController.navigate(NavRoutes.Ajustes.route) }) {
