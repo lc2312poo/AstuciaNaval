@@ -12,6 +12,8 @@ import com.example.astucianaval.ui.screens.ajustes.AjustesScreen
 import com.example.astucianaval.ui.screens.tablero.TableroScreen
 import com.example.astucianaval.ui.screens.dificultad.DificultadScreen
 import com.example.astucianaval.ui.screens.colocarbarcos.ColocarBarcosScreen
+import com.example.astucianaval.ui.screens.ganar.GanarScreen
+import com.example.astucianaval.ui.screens.perder.PerderScreen
 import com.example.astucianaval.ui.theme.AppTheme
 
 class MainActivity : ComponentActivity() {
@@ -51,5 +53,26 @@ fun AppNavigation() {
         composable("pausa") {
             PausaScreen(navController)
         }
+        composable(NavRoutes.Perder.route) {
+            PerderScreen(
+                onVolverInicio = {
+                    navController.navigate(NavRoutes.Home.route) {
+                        popUpTo(NavRoutes.Home.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+
+        composable(NavRoutes.Ganar.route) {
+            GanarScreen(
+                onVolverInicio = {
+                    navController.navigate(NavRoutes.Home.route) {
+                        popUpTo(NavRoutes.Home.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+
+
     }
 }

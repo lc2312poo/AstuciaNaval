@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Pause
+import com.example.astucianaval.ui.screens.NavRoutes
+
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -155,10 +157,24 @@ fun TableroScreen(
                                                     RoundedCornerShape(3.dp)
                                                 )
                                                 .clickable {
-                                                    cells[index] = !cells[index]
-                                                    if (cells[index]) aciertos.value++
-                                                    else fallos.value++
-                                                },
+                                                    // Evitar doble conteo
+                                                    if (!cells[index]) {
+                                                        cells[index] = true
+                                                        aciertos.value++
+                                                    } else {
+                                                        cells[index] = false
+                                                        fallos.value++
+                                                    }
+
+                                                    // Verificar condiciones de victoria o derrota
+                                                    if (aciertos.value >= 5) {
+                                                        navController.navigate(NavRoutes.Ganar.route)
+                                                    } else if (fallos.value >= 4) {
+                                                        navController.navigate(NavRoutes.Perder.route)
+                                                    }
+                                                }
+
+,
                                             contentAlignment = Alignment.Center
                                         ) {
                                             if (isSelected) Text("💥", fontSize = 14.sp)
