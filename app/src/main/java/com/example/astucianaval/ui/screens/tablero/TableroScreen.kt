@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,11 +20,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Pause
 import com.example.astucianaval.ui.screens.NavRoutes
-
-
+import kotlinx.coroutines.delay
+import kotlin.random.Random
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -32,11 +32,34 @@ fun TableroScreen(
 ) {
     val gridSize = 8
     val totalCells = gridSize * gridSize
-    val cells = remember { mutableStateListOf<Boolean>().apply { repeat(totalCells) { add(false) } } }
     val letras = ('A'..'H').map { it.toString() }
     val numeros = (1..8).map { it.toString() }
+
+
+    val cellsJugador = remember { mutableStateListOf<Boolean>().apply { repeat(totalCells) { add(false) } } }
+    val cellsEnemigo = remember { mutableStateListOf<Boolean>().apply { repeat(totalCells) { add(false) } } }
+
     val aciertos = remember { mutableStateOf(0) }
     val fallos = remember { mutableStateOf(0) }
+
+
+    var tiempoRestante by remember { mutableStateOf(120) }
+    LaunchedEffect(Unit) {
+        while (tiempoRestante > 0) {
+            delay(1000)
+            tiempoRestante--
+        }
+        navController.navigate(NavRoutes.Perder.route)
+    }
+
+
+    fun disparoEnemigo() {
+        val celdasDisponibles = cellsJugador.withIndex().filter { !it.value }
+        if (celdasDisponibles.isNotEmpty()) {
+            val disparo = celdasDisponibles.random().index
+            cellsJugador[disparo] = true
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -47,146 +70,69 @@ fun TableroScreen(
                 )
             )
     ) {
-
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 70.dp),
+                .padding(top = 40.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             Text(
                 text = "🌊 Astucia Naval 🌊",
                 fontSize = 26.sp,
                 color = Color.White,
                 fontWeight = FontWeight.Bold
             )
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(2.dp))
             Text(
                 text = "Comandante: $playerName",
                 fontSize = 18.sp,
                 color = Color.White
             )
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "Tiempo restante: ${tiempoRestante}s",
+                color = if (tiempoRestante > 10) Color.Yellow else Color.Red,
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp
+            )
+            Spacer(modifier = Modifier.height(24.dp))
 
 
-            BoxWithConstraints(
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp),
-                contentAlignment = Alignment.Center
+                    .padding(horizontal = 20.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                val tableroSize = maxHeight * 0.8f
 
-                Box(
-                    modifier = Modifier
-                        .size(tableroSize)
-                        .background(Color(0xFFB0BEC5), RoundedCornerShape(12.dp))
-                        .border(6.dp, Color.DarkGray, RoundedCornerShape(12.dp))
-                        .padding(10.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceEvenly,
-                            modifier = Modifier
-                                .width(tableroSize * 0.9f)
-                                .padding(bottom = 4.dp)
-                        ) {
-                            letras.forEach { letra ->
-                                Text(
-                                    text = letra,
-                                    color = Color(0xFF263238),
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 13.sp
-                                )
-                            }
-                        }
+                TableroIndividual(
+                    navController = navController,
+                    titulo = "Tablero Enemigo",
+                    cells = cellsJugador,
+                    letras = letras,
+                    numeros = numeros,
+                    aciertos = aciertos,
+                    fallos = fallos,
+                    esJugador = true,
+                    onDisparoJugador = {}
+                )
 
 
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                            Column(
-                                verticalArrangement = Arrangement.SpaceEvenly,
-                                modifier = Modifier.height(tableroSize * 0.9f)
-                            ) {
-                                numeros.forEach { num ->
-                                    Text(
-                                        text = num,
-                                        color = Color(0xFF263238),
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 13.sp
-                                    )
-                                }
-                            }
-
-                            Spacer(modifier = Modifier.width(6.dp))
-
-
-                            Box(
-                                modifier = Modifier
-                                    .size(tableroSize * 0.9f)
-                                    .background(Color(0xFF90CAF9), RoundedCornerShape(8.dp))
-                                    .border(2.dp, Color(0xFF1565C0), RoundedCornerShape(8.dp))
-                                    .padding(4.dp),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                LazyVerticalGrid(
-                                    columns = GridCells.Fixed(gridSize),
-                                    verticalArrangement = Arrangement.spacedBy(2.dp),
-                                    horizontalArrangement = Arrangement.spacedBy(2.dp),
-                                    modifier = Modifier.fillMaxSize()
-                                ) {
-                                    items(totalCells) { index ->
-                                        val isSelected = cells[index]
-                                        Box(
-                                            modifier = Modifier
-                                                .aspectRatio(1f)
-                                                .background(
-                                                    if (isSelected) Color(0xFF42A5F5)
-                                                    else Color(0xFF1976D2),
-                                                    shape = RoundedCornerShape(3.dp)
-                                                )
-                                                .border(
-                                                    1.dp,
-                                                    Color.White.copy(alpha = 0.4f),
-                                                    RoundedCornerShape(3.dp)
-                                                )
-                                                .clickable {
-                                                    // Evitar doble conteo
-                                                    if (!cells[index]) {
-                                                        cells[index] = true
-                                                        aciertos.value++
-                                                    } else {
-                                                        cells[index] = false
-                                                        fallos.value++
-                                                    }
-
-                                                    // Verificar condiciones de victoria o derrota
-                                                    if (aciertos.value >= 5) {
-                                                        navController.navigate(NavRoutes.Ganar.route)
-                                                    } else if (fallos.value >= 4) {
-                                                        navController.navigate(NavRoutes.Perder.route)
-                                                    }
-                                                }
-
-,
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                            if (isSelected) Text("💥", fontSize = 14.sp)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                TableroIndividual(
+                    navController = navController,
+                    titulo = "Tu tablero ",
+                    cells = cellsEnemigo,
+                    letras = letras,
+                    numeros = numeros,
+                    aciertos = aciertos,
+                    fallos = fallos,
+                    esJugador = false,
+                    onDisparoJugador = { disparoEnemigo() }
+                )
             }
         }
+
 
         Row(
             modifier = Modifier
@@ -200,18 +146,160 @@ fun TableroScreen(
         }
 
 
-        IconButton(onClick = { navController.navigate("pausa") }) {
-            Icon(Icons.Filled.Pause, contentDescription = "Pausar")
-        }
+        IconButton(
+            onClick = { navController.navigate("pausa") },
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 16.dp)
+        ) {
             Icon(
-                imageVector = Icons.Default.Pause,
-                contentDescription = "Pausa",
+                imageVector = Icons.Filled.Pause,
+                contentDescription = "Pausar",
                 tint = Color.White,
                 modifier = Modifier.size(28.dp)
             )
         }
     }
+}
 
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun TableroIndividual(
+    navController: NavHostController,
+    titulo: String,
+    cells: MutableList<Boolean>,
+    letras: List<String>,
+    numeros: List<String>,
+    aciertos: MutableState<Int>,
+    fallos: MutableState<Int>,
+    esJugador: Boolean,
+    onDisparoJugador: () -> Unit
+) {
+    val gridSize = 8
+    val totalCells = gridSize * gridSize
+
+    BoxWithConstraints(
+        modifier = Modifier.fillMaxWidth(0.48f),
+        contentAlignment = Alignment.Center
+    ) {
+        val tableroSize = maxHeight * 0.95f
+
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                text = titulo,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Box(
+                modifier = Modifier
+                    .size(tableroSize)
+                    .background(Color(0xFFB0BEC5), RoundedCornerShape(12.dp))
+                    .border(6.dp, Color.DarkGray, RoundedCornerShape(12.dp))
+                    .padding(10.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
+
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        modifier = Modifier
+                            .width(tableroSize * 0.9f)
+                            .padding(bottom = 4.dp)
+                    ) {
+                        letras.forEach { letra ->
+                            Text(
+                                text = letra,
+                                color = Color(0xFF263238),
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 13.sp
+                            )
+                        }
+                    }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+
+                        Column(
+                            verticalArrangement = Arrangement.SpaceEvenly,
+                            modifier = Modifier.height(tableroSize * 0.9f)
+                        ) {
+                            numeros.forEach { num ->
+                                Text(
+                                    text = num,
+                                    color = Color(0xFF263238),
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 13.sp
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.width(6.dp))
+
+
+                        Box(
+                            modifier = Modifier
+                                .size(tableroSize * 0.9f)
+                                .background(Color(0xFF90CAF9), RoundedCornerShape(8.dp))
+                                .border(2.dp, Color(0xFF1565C0), RoundedCornerShape(8.dp))
+                                .padding(4.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            LazyVerticalGrid(
+                                columns = GridCells.Fixed(gridSize),
+                                verticalArrangement = Arrangement.spacedBy(2.dp),
+                                horizontalArrangement = Arrangement.spacedBy(2.dp),
+                                modifier = Modifier.fillMaxSize()
+                            ) {
+                                items(totalCells) { index ->
+                                    val isSelected = cells[index]
+                                    Box(
+                                        modifier = Modifier
+                                            .aspectRatio(1f)
+                                            .background(
+                                                if (isSelected) Color(0xFF42A5F5)
+                                                else Color(0xFF1976D2),
+                                                shape = RoundedCornerShape(3.dp)
+                                            )
+                                            .border(
+                                                1.dp,
+                                                Color.White.copy(alpha = 0.4f),
+                                                RoundedCornerShape(3.dp)
+                                            )
+                                            .clickable {
+                                                if (!esJugador) {
+                                                    if (!cells[index]) {
+                                                        cells[index] = true
+                                                        aciertos.value++
+                                                        onDisparoJugador()
+                                                    } else {
+                                                        fallos.value++
+                                                    }
+
+                                                    if (aciertos.value >= 5)
+                                                        navController.navigate(NavRoutes.Ganar.route)
+                                                    else if (fallos.value >= 4)
+                                                        navController.navigate(NavRoutes.Perder.route)
+                                                }
+                                            },
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        if (isSelected) Text("💥", fontSize = 15.sp)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 @Composable
 private fun EstadoBox(label: String, value: Int, color: Color) {

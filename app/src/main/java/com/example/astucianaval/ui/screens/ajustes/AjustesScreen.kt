@@ -25,7 +25,7 @@ fun AjustesScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("⚙️ Ajustes", fontWeight = FontWeight.Bold) },
+                title = { Text("👤Perfil", fontWeight = FontWeight.Bold) },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color(0xFF0D47A1),
                     titleContentColor = Color.White
