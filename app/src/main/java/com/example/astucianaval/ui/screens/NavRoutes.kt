@@ -2,6 +2,9 @@ package com.example.astucianaval.ui.screens
 
 
 sealed class NavRoutes(val route: String) {
+    object Login : NavRoutes("login")
+
+    object Registro: NavRoutes("registro")
     object Home : NavRoutes("home")
     object Ajustes : NavRoutes("ajustes")
     object Dificultad : NavRoutes("dificultad")

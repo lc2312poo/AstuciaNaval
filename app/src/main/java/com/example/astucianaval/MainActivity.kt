@@ -13,9 +13,10 @@ import com.example.astucianaval.ui.screens.tablero.TableroScreen
 import com.example.astucianaval.ui.screens.dificultad.DificultadScreen
 import com.example.astucianaval.ui.screens.colocar.ColocarBarcosScreen
 import com.example.astucianaval.ui.screens.ganar.GanarScreen
+import com.example.astucianaval.ui.screens.login.LoginScreen
 import com.example.astucianaval.ui.screens.perder.PerderScreen
+import com.example.astucianaval.ui.screens.registro.RegistroScreen
 import com.example.astucianaval.ui.theme.AppTheme
-
 
 
 class MainActivity : ComponentActivity() {
@@ -35,8 +36,13 @@ fun AppNavigation() {
 
     NavHost(
         navController = navController,
-        startDestination = NavRoutes.Home.route
+        startDestination = NavRoutes.Login.route
     ) {
+        composable (NavRoutes.Login.route){
+            LoginScreen(navController) }
+        composable (NavRoutes.Registro.route){
+            RegistroScreen(navController)
+        }
         composable(NavRoutes.Home.route) {
             HomeScreen(navController)
         }
@@ -78,3 +84,5 @@ fun AppNavigation() {
 
     }
 }
+
+
