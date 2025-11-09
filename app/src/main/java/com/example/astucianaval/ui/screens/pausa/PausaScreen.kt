@@ -1,4 +1,5 @@
-package com.example.astucianaval.ui.screens
+package com.example.astucianaval.ui.screens.pausa
+
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
