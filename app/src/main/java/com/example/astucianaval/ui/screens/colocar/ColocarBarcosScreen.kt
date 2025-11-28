@@ -7,7 +7,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,18 +23,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.astucianaval.ui.screens.NavRoutes
+import com.example.astucianaval.viewmodel.ColocarBarcosViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ColocarBarcosScreen(navController: NavController) {
-    val gridSize = 8
-    val totalCells = gridSize * gridSize
-    val maxBarcos = 8
-    val cells = remember { mutableStateListOf<Boolean>().apply { repeat(totalCells) { add(false) } } }
-    var mensaje by remember { mutableStateOf("") }
+fun ColocarBarcosScreen(navController: NavController, viewModel: ColocarBarcosViewModel = viewModel()) {
 
+    val cells by viewModel.cells.collectAsState()
+    val mensaje by viewModel.mensaje.collectAsState()
+    val gridSize = viewModel.gridSize
+    val totalCells = gridSize * gridSize
 
     val infiniteTransition = rememberInfiniteTransition(label = "")
     val waveShift by infiniteTransition.animateFloat(
@@ -53,6 +58,11 @@ fun ColocarBarcosScreen(navController: NavController) {
                         color = Color.White
                     )
                 },
+                navigationIcon = {
+                    IconButton(onClick = { navController.navigate(NavRoutes.Dificultad.route) }) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Volver", tint = Color.White)
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color(0xFF0D47A1)
                 )
@@ -69,7 +79,6 @@ fun ColocarBarcosScreen(navController: NavController) {
                         colors = listOf(Color(0xFF001F54), Color(0xFF0D47A1), Color(0xFF2196F3))
                     )
                     drawRect(gradient)
-                    // Olas suaves
                     for (i in 0..10) {
                         val y = (i * 100 + waveShift % 2000) % size.height
                         drawLine(
@@ -120,6 +129,7 @@ fun ColocarBarcosScreen(navController: NavController) {
                         ) {
                             items(totalCells) { index ->
                                 val isSelected = cells[index]
+
                                 Box(
                                     modifier = Modifier
                                         .aspectRatio(1f)
@@ -133,15 +143,7 @@ fun ColocarBarcosScreen(navController: NavController) {
                                             Color.White.copy(alpha = 0.5f),
                                             RoundedCornerShape(4.dp)
                                         )
-                                        .clickable {
-                                            val seleccionados = cells.count { it }
-                                            if (!isSelected && seleccionados >= maxBarcos) {
-                                                mensaje = "⚠️ No puedes añadir más barcos"
-                                            } else {
-                                                cells[index] = !isSelected
-                                                mensaje = ""
-                                            }
-                                        },
+                                        .clickable { viewModel.toggleCell(index) },
                                     contentAlignment = Alignment.Center
                                 ) {
                                     if (isSelected) Text("🚢")
@@ -150,19 +152,16 @@ fun ColocarBarcosScreen(navController: NavController) {
                         }
                     }
 
-
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
                         Button(
                             onClick = {
-                                val barcosSeleccionados = cells.mapIndexedNotNull { index, isSelected ->
-                                    if (isSelected) index else null
-                                }
+                                val barcosSeleccionados = viewModel.obtenerBarcos()
 
-                                if (barcosSeleccionados.size < maxBarcos) {
-                                    mensaje = "⚠️ Aún te faltan posiciones por colocar"
+                                if (!viewModel.validarBarcos()) {
+                                    viewModel.setMensaje("⚠️ Aún te faltan posiciones por colocar")
                                 } else {
                                     navController.currentBackStackEntry?.savedStateHandle?.set(
                                         "barcos",

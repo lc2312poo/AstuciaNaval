@@ -24,7 +24,7 @@ fun PerderScreen(onVolverInicio: () -> Unit) {
             .background(Color.Black),
         contentAlignment = Alignment.Center
     ) {
-        // Fondo animado de tormenta
+
         TormentaAnimada()
 
         Column(
@@ -49,7 +49,7 @@ fun TormentaAnimada() {
     val lluvia = remember { List(150) { Random.nextFloat() to Random.nextFloat() } }
     val infiniteTransition = rememberInfiniteTransition(label = "lluvia")
 
-    // Movimiento vertical de la lluvia
+
     val desplazamiento by infiniteTransition.animateFloat(
         initialValue = 0f,
         targetValue = 1f,
@@ -59,7 +59,7 @@ fun TormentaAnimada() {
         ), label = "desplazamiento"
     )
 
-    // Parpadeo de relámpagos
+
     var relampagoVisible by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
@@ -75,7 +75,6 @@ fun TormentaAnimada() {
         val ancho = size.width
         val alto = size.height
 
-        // Dibuja la lluvia
         lluvia.forEach { (xFactor, yFactor) ->
             val x = xFactor * ancho
             val y = (yFactor + desplazamiento) % 1f * alto
@@ -87,7 +86,6 @@ fun TormentaAnimada() {
             )
         }
 
-        // Dibuja un relámpago (pantallazo blanco)
         if (relampagoVisible) {
             drawRect(Color.White.copy(alpha = 0.7f))
         }

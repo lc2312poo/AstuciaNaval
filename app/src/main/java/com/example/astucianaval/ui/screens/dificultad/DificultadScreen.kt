@@ -21,11 +21,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.astucianaval.ui.screens.NavRoutes
+import com.example.astucianaval.model.Difficulty
+import com.example.astucianaval.viewmodel.GameViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DificultadScreen(navController: NavController) {
+fun DificultadScreen(
+    navController: NavController,
+    viewModel: GameViewModel = viewModel()
+) {
 
     val infiniteTransition = rememberInfiniteTransition(label = "waveAnim")
     val waveOffset by infiniteTransition.animateFloat(
@@ -37,7 +43,6 @@ fun DificultadScreen(navController: NavController) {
         ),
         label = "waveOffset"
     )
-
 
     var visible by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) { visible = true }
@@ -94,7 +99,6 @@ fun DificultadScreen(navController: NavController) {
                 drawPath(path, Color(0xFF1E88E5).copy(alpha = 0.4f))
             }
 
-
             AnimatedVisibility(
                 visible = visible,
                 modifier = Modifier.fillMaxSize()
@@ -116,24 +120,12 @@ fun DificultadScreen(navController: NavController) {
 
                     Spacer(modifier = Modifier.height(32.dp))
 
-
                     Button(
-                        onClick = { navController.navigate(NavRoutes.ColocarBarcos.route) },
+                        onClick = {
+                            viewModel.setDifficulty(Difficulty.MEDIO)
+                            navController.navigate(NavRoutes.ColocarBarcos.route)
+                        },
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF42A5F5)),
-                        shape = RoundedCornerShape(12.dp),
-                        modifier = Modifier
-                            .width(230.dp)
-                            .height(55.dp)
-                    ) {
-                        Text("🌊 Fácil", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
-                    }
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-
-                    Button(
-                        onClick = { navController.navigate(NavRoutes.ColocarBarcos.route) },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1976D2)),
                         shape = RoundedCornerShape(12.dp),
                         modifier = Modifier
                             .width(230.dp)
@@ -144,6 +136,21 @@ fun DificultadScreen(navController: NavController) {
 
                     Spacer(modifier = Modifier.height(16.dp))
 
+                    Button(
+                        onClick = {
+                            viewModel.setDifficulty(Difficulty.EXPERTO)
+                            navController.navigate(NavRoutes.ColocarBarcos.route)
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1976D2)),
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier
+                            .width(230.dp)
+                            .height(55.dp)
+                    ) {
+                        Text("💣 Experto", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
 
                     Button(
                         onClick = { navController.navigate(NavRoutes.ColocarBarcos.route) },
@@ -153,7 +160,7 @@ fun DificultadScreen(navController: NavController) {
                             .width(230.dp)
                             .height(55.dp)
                     ) {
-                        Text("💣 Experto", fontSize = 18.sp, fontWeight = FontWeight.SemiBold, color = Color.White)
+                        Text("🌊 Local", fontSize = 18.sp, fontWeight = FontWeight.SemiBold, color = Color.White)
                     }
                 }
             }
