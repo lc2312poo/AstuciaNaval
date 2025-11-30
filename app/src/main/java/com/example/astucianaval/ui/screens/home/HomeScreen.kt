@@ -2,11 +2,10 @@ package com.example.astucianaval.ui.screens.home
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.animateFloat
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -15,22 +14,27 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.astucianaval.R
 import com.example.astucianaval.ui.screens.NavRoutes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController) {
 
+    val title = stringResource(id = R.string.app_title)
+    val welcome = stringResource(id = R.string.home_welcome)
+    val subtitle = stringResource(id = R.string.home_subtitle)
+    val play = stringResource(id = R.string.home_play)
+    val profile = stringResource(id = R.string.home_profile)
 
     val infiniteTransition = rememberInfiniteTransition(label = "waveAnimation")
     val waveOffset by infiniteTransition.animateFloat(
@@ -43,18 +47,15 @@ fun HomeScreen(navController: NavController) {
         label = "waveOffset"
     )
 
-
     var visible by remember { mutableStateOf(false) }
-    LaunchedEffect(Unit) {
-        visible = true
-    }
+    LaunchedEffect(Unit) { visible = true }
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Text(
-                        "⚓ Astucia Naval",
+                        title,
                         fontWeight = FontWeight.Bold,
                         color = Color.White
                     )
@@ -73,7 +74,6 @@ fun HomeScreen(navController: NavController) {
                 .padding(padding)
         ) {
 
-
             Canvas(modifier = Modifier.fillMaxSize()) {
                 val width = size.width
                 val height = size.height
@@ -81,7 +81,7 @@ fun HomeScreen(navController: NavController) {
                 val path = Path().apply {
                     moveTo(0f, height * 0.8f)
                     for (x in 0..width.toInt() step 20) {
-                        val y = (height * 0.8f + kotlin.math.sin((x + waveOffset) * 0.03f) * 20)
+                        val y = height * 0.8f + kotlin.math.sin((x + waveOffset) * 0.03f) * 20
                         lineTo(x.toFloat(), y.toFloat())
                     }
                     lineTo(width, height)
@@ -92,7 +92,6 @@ fun HomeScreen(navController: NavController) {
                 drawPath(path, Color(0xFF1565C0))
                 drawPath(path, Color(0xFF1E88E5).copy(alpha = 0.4f))
             }
-
 
             AnimatedVisibility(
                 visible = visible,
@@ -107,7 +106,7 @@ fun HomeScreen(navController: NavController) {
                 ) {
 
                     Text(
-                        text = "¡Bienvenido, Capitán!",
+                        text = welcome,
                         fontSize = 28.sp,
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
@@ -117,7 +116,7 @@ fun HomeScreen(navController: NavController) {
                     Spacer(modifier = Modifier.height(12.dp))
 
                     Text(
-                        text = "Prepárate para la batalla naval más astuta del océano.",
+                        text = subtitle,
                         color = Color.White.copy(alpha = 0.8f),
                         textAlign = TextAlign.Center,
                         fontSize = 16.sp,
@@ -126,7 +125,6 @@ fun HomeScreen(navController: NavController) {
 
                     Spacer(modifier = Modifier.height(40.dp))
 
-                    // 🌟 Botones
                     Button(
                         onClick = { navController.navigate(NavRoutes.Dificultad.route) },
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1976D2)),
@@ -135,7 +133,7 @@ fun HomeScreen(navController: NavController) {
                             .width(220.dp)
                             .height(55.dp)
                     ) {
-                        Text("🎮 Jugar", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
+                        Text(play, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -148,7 +146,7 @@ fun HomeScreen(navController: NavController) {
                             .width(220.dp)
                             .height(55.dp)
                     ) {
-                        Text("👤 Perfil", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
+                        Text(profile, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
                     }
                 }
             }

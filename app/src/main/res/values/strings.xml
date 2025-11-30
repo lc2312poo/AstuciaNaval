@@ -1,3 +1,87 @@
 <resources>
-    <string name="app_name">AstuciaNaval</string>
+
+    <string name="profile_title">Perfil</string>
+    <string name="history_title">Historial de Partidas</string>
+
+    <string name="match_1">Partida 1: Victoria</string>
+    <string name="match_2">Partida 2: Derrota</string>
+    <string name="match_3">Partida 3: Victoria</string>
+
+    <string name="change_username_title">Cambiar nombre de usuario</string>
+    <string name="new_name_label">Nuevo nombre</string>
+
+    <string name="change_account">Cambiar cuenta</string>
+
+    <string name="language_title">Idioma</string>
+    <string name="espanol">Español</string>
+    <string name="ingles">Inglés</string>
+
+    <string name="back_home">Volver al inicio</string>
+
+    <string name="app_name">Astucia Naval</string>
+    <string name="place_boats_title">Coloca tus barcos 🚢</string>
+    <string name="back">Volver</string>
+
+    <string name="place_boats_instruction">Selecciona las posiciones de tus barcos</string>
+
+    <string name="error_missing_positions">⚠️ Aún te faltan posiciones por colocar</string>
+    <string name="error_max_barcos">⚠️ No puedes añadir más barcos</string>
+    <string name="empty_text"></string>
+
+
+    <string name="next_button">Seguir ➡️</string>
+
+    <string name="select_difficulty_title">Selecciona la dificultad ⚙️</string>
+
+    <string name="choose_difficulty_instruction">Elige tu nivel de desafío:</string>
+
+    <string name="difficulty_medium">⚓ Medio</string>
+    <string name="difficulty_expert">💣 Experto</string>
+    <string name="difficulty_local">🌊 Local</string>
+
+
+    <string name="win_title">¡Felicidades, ganaste :D!</string>
+    <string name="back_to_home">Volver al inicio</string>
+
+    <string name="app_title">⚓ Astucia Naval</string>
+    <string name="home_welcome">¡Bienvenido, Capitán!</string>
+    <string name="home_subtitle">Prepárate para la batalla naval más astuta del océano.</string>
+    <string name="home_play">🎮 Jugar</string>
+    <string name="home_profile">👤 Perfil</string>
+
+    <string name="login_subtitle">Inicia sesión para continuar</string>
+
+    <string name="login_user">Usuario</string>
+    <string name="login_password">Contraseña</string>
+
+    <string name="login_button">Entrar</string>
+    <string name="login_no_account">¿No tienes cuenta? Regístrate</string>
+
+    <string name="pause_title">Juego en Pausa</string>
+    <string name="pause_continue">Continuar</string>
+    <string name="pause_back_menu">Volver al Menú</string>
+
+    <string name="lose_message">Perdiste :( ¡Buena suerte para la próxima!</string>
+
+    <string name="register_title">📝 Crear nueva cuenta</string>
+    <string name="full_name">Nombre completo</string>
+    <string name="username">Nombre de usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="confirm_password">Confirmar contraseña</string>
+    <string name="create_account">Crear cuenta</string>
+    <string name="back_to_login">Volver al inicio de sesión</string>
+
+    <string name="titulo_app">Astucia Naval</string>
+    <string name="comandante">Comandante: %1$s</string>
+    <string name="tiempo_restante">Tiempo restante: %1$s s</string>
+
+    <string name="tablero_enemigo">Tablero Enemigo</string>
+    <string name="tablero_jugador">Tu tablero</string>
+
+    <string name="aciertos">Aciertos</string>
+    <string name="fallos">Fallos</string>
+
+    <string name="btn_pausar">Pausar</string>
+
+
 </resources>

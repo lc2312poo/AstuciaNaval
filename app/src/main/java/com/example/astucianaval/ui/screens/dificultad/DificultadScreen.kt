@@ -12,16 +12,17 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.astucianaval.R
 import com.example.astucianaval.ui.screens.NavRoutes
 import com.example.astucianaval.model.Difficulty
 import com.example.astucianaval.viewmodel.GameViewModel
@@ -52,7 +53,7 @@ fun DificultadScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Selecciona la dificultad ⚙️",
+                        text = stringResource(R.string.select_difficulty_title),
                         color = Color.White,
                         fontWeight = FontWeight.Bold
                     )
@@ -61,7 +62,7 @@ fun DificultadScreen(
                     IconButton(onClick = { navController.navigate(NavRoutes.Home.route) }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Volver al menú",
+                            contentDescription = stringResource(R.string.back),
                             tint = Color.White
                         )
                     }
@@ -111,7 +112,7 @@ fun DificultadScreen(
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "Elige tu nivel de desafío:",
+                        text = stringResource(R.string.choose_difficulty_instruction),
                         color = Color.White,
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Bold,
@@ -131,7 +132,10 @@ fun DificultadScreen(
                             .width(230.dp)
                             .height(55.dp)
                     ) {
-                        Text("⚓ Medio", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
+                        Text(stringResource(R.string.difficulty_medium),
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.SemiBold
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -147,7 +151,10 @@ fun DificultadScreen(
                             .width(230.dp)
                             .height(55.dp)
                     ) {
-                        Text("💣 Experto", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
+                        Text(stringResource(R.string.difficulty_expert),
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.SemiBold
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -160,7 +167,12 @@ fun DificultadScreen(
                             .width(230.dp)
                             .height(55.dp)
                     ) {
-                        Text("🌊 Local", fontSize = 18.sp, fontWeight = FontWeight.SemiBold, color = Color.White)
+                        Text(
+                            stringResource(R.string.difficulty_local),
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color.White
+                        )
                     }
                 }
             }

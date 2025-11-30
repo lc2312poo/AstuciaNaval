@@ -11,11 +11,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.astucianaval.ui.screens.NavRoutes
+import com.example.astucianaval.R
 
 @Composable
 fun LoginScreen(navController: NavHostController) {
@@ -42,25 +44,24 @@ fun LoginScreen(navController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "🌊 Astucia Naval 🌊",
+                text = stringResource(R.string.app_title),
                 color = Color.White,
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Inicia sesión para continuar",
+                text = stringResource(R.string.login_subtitle),
                 color = Color.White.copy(alpha = 0.85f),
                 fontSize = 16.sp
             )
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // 🧍 Campo de usuario
             OutlinedTextField(
                 value = username,
                 onValueChange = { username = it },
-                label = { Text("Usuario") },
+                label = { Text(stringResource(R.string.login_user)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.colors(
@@ -79,7 +80,7 @@ fun LoginScreen(navController: NavHostController) {
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
-                label = { Text("Contraseña") },
+                label = { Text(stringResource(R.string.login_password)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.colors(
@@ -97,7 +98,6 @@ fun LoginScreen(navController: NavHostController) {
 
             Spacer(modifier = Modifier.height(30.dp))
 
-            // 🔘 Botón Entrar
             Button(
                 onClick = { navController.navigate(NavRoutes.Home.route) },
                 modifier = Modifier
@@ -106,7 +106,7 @@ fun LoginScreen(navController: NavHostController) {
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0D47A1)),
                 shape = RoundedCornerShape(10.dp)
             ) {
-                Text("Entrar", color = Color.White, fontSize = 18.sp)
+                Text(stringResource(R.string.login_button), color = Color.White, fontSize = 18.sp)
             }
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -115,7 +115,7 @@ fun LoginScreen(navController: NavHostController) {
                 onClick = { navController.navigate(NavRoutes.Registro.route) }
             ) {
                 Text(
-                    "¿No tienes cuenta? Regístrate",
+                    stringResource(R.string.login_no_account),
                     color = Color.White,
                     fontSize = 16.sp
                 )

@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -20,22 +19,31 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.astucianaval.R
 import com.example.astucianaval.ui.screens.NavRoutes
 import com.example.astucianaval.viewmodel.ColocarBarcosViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ColocarBarcosScreen(navController: NavController, viewModel: ColocarBarcosViewModel = viewModel()) {
+fun ColocarBarcosScreen(
+    navController: NavController,
+    viewModel: ColocarBarcosViewModel = viewModel()
+) {
 
     val cells by viewModel.cells.collectAsState()
-    val mensaje by viewModel.mensaje.collectAsState()
+    val mensajeKey by viewModel.mensaje.collectAsState()
+
     val gridSize = viewModel.gridSize
     val totalCells = gridSize * gridSize
+
+    val context = LocalContext.current
 
     val infiniteTransition = rememberInfiniteTransition(label = "")
     val waveShift by infiniteTransition.animateFloat(
@@ -53,14 +61,18 @@ fun ColocarBarcosScreen(navController: NavController, viewModel: ColocarBarcosVi
             TopAppBar(
                 title = {
                     Text(
-                        "Coloca tus barcos 🚢",
+                        stringResource(R.string.place_boats_title),
                         fontWeight = FontWeight.Bold,
                         color = Color.White
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = { navController.navigate(NavRoutes.Dificultad.route) }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Volver", tint = Color.White)
+                        Icon(
+                            Icons.Default.ArrowBack,
+                            contentDescription = stringResource(R.string.back),
+                            tint = Color.White
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -74,11 +86,11 @@ fun ColocarBarcosScreen(navController: NavController, viewModel: ColocarBarcosVi
             modifier = Modifier
                 .fillMaxSize()
                 .drawBehind {
-
                     val gradient = Brush.verticalGradient(
                         colors = listOf(Color(0xFF001F54), Color(0xFF0D47A1), Color(0xFF2196F3))
                     )
                     drawRect(gradient)
+
                     for (i in 0..10) {
                         val y = (i * 100 + waveShift % 2000) % size.height
                         drawLine(
@@ -101,7 +113,7 @@ fun ColocarBarcosScreen(navController: NavController, viewModel: ColocarBarcosVi
             ) {
 
                 Text(
-                    text = "Selecciona las posiciones de tus barcos",
+                    text = stringResource(R.string.place_boats_instruction),
                     fontSize = 18.sp,
                     color = Color.White,
                     fontWeight = FontWeight.Medium
@@ -156,17 +168,18 @@ fun ColocarBarcosScreen(navController: NavController, viewModel: ColocarBarcosVi
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
+
                         Button(
                             onClick = {
-                                val barcosSeleccionados = viewModel.obtenerBarcos()
+                                val barcos = viewModel.obtenerBarcos()
 
                                 if (!viewModel.validarBarcos()) {
-                                    viewModel.setMensaje("⚠️ Aún te faltan posiciones por colocar")
+                                    viewModel.setMensaje("error_missing_positions")
                                 } else {
-                                    navController.currentBackStackEntry?.savedStateHandle?.set(
-                                        "barcos",
-                                        barcosSeleccionados
-                                    )
+                                    navController.currentBackStackEntry
+                                        ?.savedStateHandle
+                                        ?.set("barcos", barcos)
+
                                     navController.navigate(NavRoutes.Tablero.route)
                                 }
                             },
@@ -174,16 +187,26 @@ fun ColocarBarcosScreen(navController: NavController, viewModel: ColocarBarcosVi
                                 .width(140.dp)
                                 .height(60.dp)
                         ) {
-                            Text("Seguir ➡️")
+                            Text(stringResource(R.string.next_button))
                         }
 
-                        if (mensaje.isNotEmpty()) {
+                        if (mensajeKey.isNotEmpty()) {
+
+                            val mensajeTraducido = stringResource(
+                                id = when (mensajeKey) {
+                                    "error_missing_positions" -> R.string.error_missing_positions
+                                    "error_max_barcos" -> R.string.error_max_barcos
+                                    else -> R.string.empty_text
+                                }
+                            )
+
                             Spacer(modifier = Modifier.height(12.dp))
+
                             Text(
-                                text = mensaje,
+                                text = mensajeTraducido,
                                 color = Color.Red,
                                 fontWeight = FontWeight.Bold,
-                                modifier = Modifier.width(140.dp)
+                                modifier = Modifier.width(160.dp)
                             )
                         }
                     }

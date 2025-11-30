@@ -11,10 +11,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.astucianaval.R
 import com.example.astucianaval.ui.screens.NavRoutes
 
 @Composable
@@ -43,17 +45,20 @@ fun RegistroScreen(navController: NavHostController) {
                 .padding(vertical = 40.dp, horizontal = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
             Text(
-                text = "📝 Crear nueva cuenta",
+                text = stringResource(R.string.register_title),
                 color = Color.White,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
 
+            Spacer(modifier = Modifier.height(16.dp))
+
             OutlinedTextField(
                 value = nombre,
                 onValueChange = { nombre = it },
-                label = { Text("Nombre completo") },
+                label = { Text(stringResource(R.string.full_name)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -61,7 +66,7 @@ fun RegistroScreen(navController: NavHostController) {
             OutlinedTextField(
                 value = usuario,
                 onValueChange = { usuario = it },
-                label = { Text("Nombre de usuario") },
+                label = { Text(stringResource(R.string.username)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -69,7 +74,7 @@ fun RegistroScreen(navController: NavHostController) {
             OutlinedTextField(
                 value = contrasena,
                 onValueChange = { contrasena = it },
-                label = { Text("Contraseña") },
+                label = { Text(stringResource(R.string.password)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -77,29 +82,37 @@ fun RegistroScreen(navController: NavHostController) {
             OutlinedTextField(
                 value = confirmar,
                 onValueChange = { confirmar = it },
-                label = { Text("Confirmar contraseña") },
+                label = { Text(stringResource(R.string.confirm_password)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
 
+            Spacer(modifier = Modifier.height(24.dp))
+
             Button(
                 onClick = {
-                    // Por ahora solo vuelve al login
                     navController.navigate(NavRoutes.Login.route) {
                         popUpTo(NavRoutes.Login.route) { inclusive = true }
                     }
                 },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0D47A1))
             ) {
-                Text("Crear cuenta", color = Color.White)
+                Text(stringResource(R.string.create_account), color = Color.White)
             }
+
+            Spacer(modifier = Modifier.height(12.dp))
 
             TextButton(
                 onClick = { navController.navigate(NavRoutes.Login.route) },
                 modifier = Modifier.align(Alignment.End)
             ) {
-                Text("Volver al inicio de sesión", color = Color.White)
+                Text(
+                    stringResource(R.string.back_to_login),
+                    color = Color.White
+                )
             }
         }
     }

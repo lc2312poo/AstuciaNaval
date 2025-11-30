@@ -11,16 +11,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.astucianaval.R
 import kotlin.random.Random
 import kotlin.math.PI
 import kotlin.math.sin
 
-
 @Composable
 fun GanarScreen(onVolverInicio: () -> Unit) {
+
+    val winTitle = stringResource(id = R.string.win_title)
+    val backToHome = stringResource(id = R.string.back_to_home)
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -31,7 +36,7 @@ fun GanarScreen(onVolverInicio: () -> Unit) {
 
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
-                text = "¡Felicidades, ganaste :D!",
+                text = winTitle,
                 color = Color.White,
                 fontSize = 36.sp,
                 fontWeight = FontWeight.Bold
@@ -40,7 +45,7 @@ fun GanarScreen(onVolverInicio: () -> Unit) {
             Spacer(modifier = Modifier.height(20.dp))
 
             Button(onClick = onVolverInicio) {
-                Text("Volver al inicio")
+                Text(backToHome)
             }
         }
     }
@@ -48,15 +53,15 @@ fun GanarScreen(onVolverInicio: () -> Unit) {
 
 @Composable
 fun ConfettiAnimation(confettiCount: Int = 120) {
-    // Crear las partículas con parámetros relativos (xStartFraction entre 0..1)
+
     val confetti = remember {
         List(confettiCount) {
             ConfettiPiece(
-                xStartFraction = Random.nextFloat(),        // 0..1, relativo al ancho del canvas
-                startOffsetFraction = Random.nextFloat() * -0.8f, // inicia arriba (negativo)
+                xStartFraction = Random.nextFloat(),
+                startOffsetFraction = Random.nextFloat() * -0.8f,
                 duration = Random.nextInt(2500, 6000),
-                sizePx = Random.nextInt(4, 14).toFloat(),  // radio en px (aprox)
-                driftFraction = Random.nextFloat() * 0.08f + 0.01f, // cuanto se mueve lateral relativo al ancho
+                sizePx = Random.nextInt(4, 14).toFloat(),
+                driftFraction = Random.nextFloat() * 0.08f + 0.01f,
                 phase = Random.nextFloat() * 2f * PI.toFloat(),
                 color = listOf(
                     Color(0xFFE53935), Color(0xFF1E88E5), Color(0xFF43A047),
@@ -68,7 +73,6 @@ fun ConfettiAnimation(confettiCount: Int = 120) {
 
     val transition = rememberInfiniteTransition()
 
-    // Para cada partícula obtengo un progreso animado 0..1 con su propia duración y delay aleatorio
     val progresses = confetti.map { piece ->
         transition.animateFloat(
             initialValue = 0f,
@@ -91,16 +95,13 @@ fun ConfettiAnimation(confettiCount: Int = 120) {
         confetti.forEachIndexed { i, piece ->
             val progress = progresses[i].value.coerceIn(0f, 1f)
 
-            // X: posición base relativa al ancho + oscilación lateral dependiente del progreso
             val xBase = piece.xStartFraction * w
             val xDrift = sin(progress * 2f * PI.toFloat() + piece.phase) * piece.driftFraction * w
             val x = (xBase + xDrift).coerceIn(0f, w)
 
-            // Y: empieza arriba (startOffsetFraction * h) y cae hasta h + extra
             val yStart = piece.startOffsetFraction * h
-            val y = yStart + progress * (h + h * 0.3f) // cae un poco más allá para que salga de pantalla
+            val y = yStart + progress * (h + h * 0.3f)
 
-            // Dibuja la partícula
             drawCircle(
                 color = piece.color,
                 radius = piece.sizePx,
@@ -111,11 +112,11 @@ fun ConfettiAnimation(confettiCount: Int = 120) {
 }
 
 data class ConfettiPiece(
-    val xStartFraction: Float = 0.5f,   // 0..1 relativo al ancho
-    val startOffsetFraction: Float = -0.5f, // donde comienza verticalmente relativo al alto (negativo = arriba)
-    val duration: Int = 3000,          // ms
-    val sizePx: Float = 6f,            // radio en px
-    val driftFraction: Float = 0.03f,  // cuanto se desplaza lateral relativo al ancho (ej 0.05 -> 5% del ancho)
-    val phase: Float = 0f,             // fase para la oscilación
+    val xStartFraction: Float = 0.5f,
+    val startOffsetFraction: Float = -0.5f,
+    val duration: Int = 3000,
+    val sizePx: Float = 6f,
+    val driftFraction: Float = 0.03f,
+    val phase: Float = 0f,
     val color: Color = Color.Red
 )

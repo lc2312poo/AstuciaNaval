@@ -1,0 +1,84 @@
+<resources>
+
+    <string name="profile_title">Profile</string>
+    <string name="history_title">Match History</string>
+
+    <string name="match_1">Match 1: Victory</string>
+    <string name="match_2">Match 2: Defeat</string>
+    <string name="match_3">Match 3: Victory</string>
+
+    <string name="change_username_title">Change username</string>
+    <string name="new_name_label">New name</string>
+
+    <string name="change_account">Switch account</string>
+
+    <string name="language_title">Language</string>
+    <string name="espanol">Spanish</string>
+    <string name="ingles">English</string>
+
+    <string name="back_home">Back to home</string>
+
+    <string name="app_name">Astucia Naval</string>
+    <string name="place_boats_title">Place your ships 🚢</string>
+    <string name="back">Back</string>
+
+    <string name="place_boats_instruction">Select the positions of your ships</string>
+
+    <string name="error_missing_positions">⚠️ You still have positions left to place</string>
+
+    <string name="next_button">Continue ➡️</string>
+
+    <string name="select_difficulty_title">Select difficulty ⚙️</string>
+
+    <string name="choose_difficulty_instruction">Choose your challenge level:</string>
+
+    <string name="difficulty_medium">⚓ Medium</string>
+    <string name="difficulty_expert">💣 Expert</string>
+    <string name="difficulty_local">🌊 Local</string>
+
+    <string name="win_title">Congratulations, you won! :D</string>
+    <string name="back_to_home">Back to home</string>
+
+    <string name="app_title">⚓ Naval Cunning</string>
+    <string name="home_welcome">Welcome, Captain!</string>
+    <string name="home_subtitle">Get ready for the most strategic naval battle on the ocean.</string>
+    <string name="home_play">🎮 Play</string>
+    <string name="home_profile">👤 Profile</string>
+
+    <string name="login_subtitle">Log in to continue</string>
+
+    <string name="login_user">Username</string>
+    <string name="login_password">Password</string>
+
+    <string name="login_button">Sign in</string>
+    <string name="login_no_account">Do not have an account? Register</string>
+
+    <string name="pause_title">Game Paused</string>
+    <string name="pause_continue">Continue</string>
+    <string name="pause_back_menu">Back to Menu</string>
+
+    <string name="lose_message">You lost :( Better luck next time!</string>
+
+    <string name="register_title">📝 Create New Account</string>
+    <string name="full_name">Full Name</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="create_account">Create Account</string>
+    <string name="back_to_login">Back to Login</string>
+
+    <string name="titulo_app">Naval Tactics</string>
+    <string name="comandante">Commander: %1$s</string>
+    <string name="tiempo_restante">Time remaining: %1$s s</string>
+
+    <string name="tablero_enemigo">Enemy Board</string>
+    <string name="tablero_jugador">Your Board</string>
+
+    <string name="aciertos">Hits</string>
+    <string name="fallos">Misses</string>
+
+    <string name="btn_pausar">Pause</string>
+
+    <string name="error_max_barcos">⚠️ You cannot add more ships</string>
+    <string name="empty_text"></string>
+</resources>

@@ -10,9 +10,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.astucianaval.R
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
@@ -31,14 +33,16 @@ fun PerderScreen(onVolverInicio: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Perdiste :( ¡Buena suerte para la próxima!",
+                text = stringResource(R.string.lose_message),
                 color = Color.White,
                 fontSize = 36.sp,
                 fontWeight = FontWeight.Bold
             )
+
             Spacer(modifier = Modifier.height(20.dp))
+
             Button(onClick = onVolverInicio) {
-                Text("Volver al inicio")
+                Text(stringResource(R.string.back_to_home))
             }
         }
     }
@@ -49,16 +53,15 @@ fun TormentaAnimada() {
     val lluvia = remember { List(150) { Random.nextFloat() to Random.nextFloat() } }
     val infiniteTransition = rememberInfiniteTransition(label = "lluvia")
 
-
     val desplazamiento by infiniteTransition.animateFloat(
         initialValue = 0f,
         targetValue = 1f,
         animationSpec = infiniteRepeatable(
             animation = tween(1000, easing = LinearEasing),
             repeatMode = RepeatMode.Restart
-        ), label = "desplazamiento"
+        ),
+        label = "desplazamiento"
     )
-
 
     var relampagoVisible by remember { mutableStateOf(false) }
 

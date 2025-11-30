@@ -22,7 +22,7 @@ class ColocarBarcosViewModel : ViewModel() {
         val seleccionados = current.count { it }
 
         if (!current[index] && seleccionados >= maxBarcos) {
-            _mensaje.value = "⚠️ No puedes añadir más barcos"
+            _mensaje.value = "error_max_barcos"
             return
         }
 

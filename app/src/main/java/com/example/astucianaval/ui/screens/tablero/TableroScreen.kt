@@ -28,6 +28,8 @@ import kotlinx.coroutines.launch
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.res.stringResource
+import com.example.astucianaval.R
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -80,11 +82,12 @@ fun TableroScreen(navController: NavHostController, playerName: String = "Jugado
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "🌊 Astucia Naval 🌊",
+                text = stringResource(R.string.app_title),
                 fontSize = 26.sp,
                 color = Color.White,
                 fontWeight = FontWeight.Bold
             )
+
             Spacer(modifier = Modifier.height(2.dp))
             Text(
                 text = "Comandante: $playerName",
@@ -109,7 +112,8 @@ fun TableroScreen(navController: NavHostController, playerName: String = "Jugado
             ) {
 
                 TableroIndividualEnemigo(
-                    titulo = "Tablero Enemigo",
+
+                    titulo = stringResource(R.string.tablero_enemigo),
                     gridSize = gridSize,
                     totalCells = totalCells,
                     enemyShipPositions = vm.barcosEnemigo,
@@ -141,7 +145,8 @@ fun TableroScreen(navController: NavHostController, playerName: String = "Jugado
                 }
 
                 TableroIndividualJugador(
-                    titulo = "Tu tablero",
+                    //tu tablero
+                    titulo = stringResource(R.string.tablero_jugador),
                     gridSize = gridSize,
                     totalCells = totalCells,
                     playerShipPositions = vm.barcosJugador,
