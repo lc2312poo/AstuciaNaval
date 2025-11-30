@@ -27,6 +27,10 @@ class TableroViewModel : ViewModel() {
     var fallos = mutableStateOf(0)
     var tiempoRestante = mutableStateOf(120)
 
+    val disparosJugador = mutableStateListOf<Boolean>().apply { repeat(64) { add(false) } }
+    val disparosJugadorAciertos = mutableStateListOf<Boolean>().apply { repeat(64) { add(false) } }
+
+
     private val disparosIA = mutableListOf<Int>()
 
     private var ultimoAciertoIA: Int? = null

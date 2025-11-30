@@ -29,6 +29,8 @@ import com.example.astucianaval.ui.screens.registro.RegistroScreen
 import com.example.astucianaval.ui.screens.pausa.PausaScreen
 import com.example.astucianaval.ui.screens.home.HomeScreen
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.astucianaval.viewmodel.TableroViewModel
 
 class MainActivity : ComponentActivity() {
 
@@ -126,43 +128,35 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun AppNavigation() {
-
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
         startDestination = NavRoutes.Login.route
     ) {
-
-        composable(NavRoutes.Login.route) {
-            LoginScreen(navController)
-        }
-
-        composable(NavRoutes.Registro.route) {
+        composable (NavRoutes.Login.route){
+            LoginScreen(navController) }
+        composable (NavRoutes.Registro.route){
             RegistroScreen(navController)
         }
-
         composable(NavRoutes.Home.route) {
             HomeScreen(navController)
         }
-
         composable(NavRoutes.Ajustes.route) {
             AjustesScreen(navController)
         }
-
-        composable(NavRoutes.Tablero.route) {
-            TableroScreen(navController)
+        composable(NavRoutes.Tablero.route) { backStackEntry ->
+            val viewModel: TableroViewModel = viewModel(backStackEntry)
+            TableroScreen(navController, viewModel)
         }
 
         composable(NavRoutes.Dificultad.route) {
             DificultadScreen(navController)
         }
-
         composable(NavRoutes.ColocarBarcos.route) {
             ColocarBarcosScreen(navController)
         }
-
-        composable("pausa") {
+        composable(NavRoutes.Pausa.route) {
             PausaScreen(navController)
         }
 
@@ -185,5 +179,7 @@ fun AppNavigation() {
                 }
             )
         }
+
+
     }
 }

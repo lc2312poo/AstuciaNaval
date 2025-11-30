@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.astucianaval.ui.screens.NavRoutes
 import com.example.astucianaval.viewmodel.TableroViewModel
@@ -33,33 +32,38 @@ import com.example.astucianaval.R
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TableroScreen(navController: NavHostController, playerName: String = "Jugador 1") {
-    val vm: TableroViewModel = viewModel()
+fun TableroScreen(
+    navController: NavHostController,
+    viewModel: TableroViewModel,
+    playerName: String = "Jugador 1"
+) {
+    val vm = viewModel
     val scope = rememberCoroutineScope()
 
     val gridSize = 8
     val totalCells = gridSize * gridSize
 
-    val playerShot = remember {
-        mutableStateListOf<Boolean>().apply { repeat(totalCells) { add(false) } }
-    }
+    val playerShot = vm.disparosJugador
+    val playerShotHit = vm.disparosJugadorAciertos
 
-    val playerShotHit = remember {
-        mutableStateListOf<Boolean>().apply { repeat(totalCells) { add(false) } }
-    }
 
     LaunchedEffect(Unit) {
+
         val savedFromPrev = navController.previousBackStackEntry?.savedStateHandle?.get<List<Int>>("barcos")
         val savedFromCurrent = navController.currentBackStackEntry?.savedStateHandle?.get<List<Int>>("barcos")
         val saved = savedFromPrev ?: savedFromCurrent
-        if (saved != null && saved.isNotEmpty()) {
+        if (!saved.isNullOrEmpty() && vm.barcosJugador.isEmpty()) {
             vm.cargarBarcos(saved)
         }
 
-        vm.generarBarcosEnemigo()
+        if (vm.barcosEnemigo.isEmpty()) {
+            vm.generarBarcosEnemigo()
+        }
 
-        vm.iniciarTemporizador {
-            navController.navigate(NavRoutes.Perder.route)
+        if (vm.tiempoRestante.value == 120) {
+            vm.iniciarTemporizador {
+                navController.navigate(NavRoutes.Perder.route)
+            }
         }
     }
 
@@ -87,7 +91,6 @@ fun TableroScreen(navController: NavHostController, playerName: String = "Jugado
                 color = Color.White,
                 fontWeight = FontWeight.Bold
             )
-
             Spacer(modifier = Modifier.height(2.dp))
             Text(
                 text = "Comandante: $playerName",
@@ -110,9 +113,7 @@ fun TableroScreen(navController: NavHostController, playerName: String = "Jugado
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
                 TableroIndividualEnemigo(
-
                     titulo = stringResource(R.string.tablero_enemigo),
                     gridSize = gridSize,
                     totalCells = totalCells,
@@ -121,13 +122,13 @@ fun TableroScreen(navController: NavHostController, playerName: String = "Jugado
                     playerShotHit = playerShotHit,
                     letras = letras,
                     numeros = numeros
-                ) { index ->
+                ){ index ->
                     if (playerShot[index]) return@TableroIndividualEnemigo
 
                     val hit = vm.barcosEnemigo.contains(index)
 
-                    playerShot[index] = true
-                    playerShotHit[index] = hit
+                    vm.disparosJugador[index] = true
+                    vm.disparosJugadorAciertos[index] = hit
 
                     vm.disparoJugador(
                         index,
@@ -145,7 +146,6 @@ fun TableroScreen(navController: NavHostController, playerName: String = "Jugado
                 }
 
                 TableroIndividualJugador(
-                    //tu tablero
                     titulo = stringResource(R.string.tablero_jugador),
                     gridSize = gridSize,
                     totalCells = totalCells,
@@ -184,7 +184,6 @@ fun TableroScreen(navController: NavHostController, playerName: String = "Jugado
         }
     }
 }
-
 
 @Composable
 fun TableroIndividualEnemigo(
