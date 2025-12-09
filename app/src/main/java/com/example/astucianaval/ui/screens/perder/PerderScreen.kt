@@ -14,12 +14,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.astucianaval.R
+import com.example.astucianaval.viewmodel.HistorialViewModel
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
 @Composable
-fun PerderScreen(onVolverInicio: () -> Unit) {
+fun PerderScreen(
+    onVolverInicio: () -> Unit,
+    historialViewModel: HistorialViewModel = viewModel()
+) {
+    LaunchedEffect(Unit) {
+        historialViewModel.addGameRecord("Derrota")
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()

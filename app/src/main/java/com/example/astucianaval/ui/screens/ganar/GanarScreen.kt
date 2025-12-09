@@ -15,13 +15,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.astucianaval.R
+import com.example.astucianaval.viewmodel.HistorialViewModel
 import kotlin.random.Random
 import kotlin.math.PI
 import kotlin.math.sin
 
 @Composable
-fun GanarScreen(onVolverInicio: () -> Unit) {
+fun GanarScreen(
+    onVolverInicio: () -> Unit,
+    historialViewModel: HistorialViewModel = viewModel()
+) {
+    LaunchedEffect(Unit) {
+        historialViewModel.addGameRecord("Victoria")
+    }
 
     val winTitle = stringResource(id = R.string.win_title)
     val backToHome = stringResource(id = R.string.back_to_home)

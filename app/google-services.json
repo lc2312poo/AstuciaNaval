@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "138118974336",
+    "firebase_url": "https://astucianaval-default-rtdb.firebaseio.com",
+    "project_id": "astucianaval",
+    "storage_bucket": "astucianaval.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:138118974336:android:7e5bad91d341032bc3cf65",
+        "android_client_info": {
+          "package_name": "com.example.astucianaval"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "138118974336-4gehpigcf76iu4ck1gf80ho1mh5juv49.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.astucianaval",
+            "certificate_hash": "d18caec3db66735ddb9e9a470b06a7978bf3dad1"
+          }
+        },
+        {
+          "client_id": "138118974336-hlu47n3m83vr11k40ln4bube3rmc3692.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZls-K-BmPh8p_mmehWIhy8LysqKJ85Vw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "138118974336-hlu47n3m83vr11k40ln4bube3rmc3692.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

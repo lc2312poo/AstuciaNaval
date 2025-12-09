@@ -47,7 +47,7 @@
 
     <string name="login_subtitle">Log in to continue</string>
 
-    <string name="login_user">Username</string>
+    <string name="login_user">Email Address</string>
     <string name="login_password">Password</string>
 
     <string name="login_button">Sign in</string>
@@ -61,7 +61,7 @@
 
     <string name="register_title">📝 Create New Account</string>
     <string name="full_name">Full Name</string>
-    <string name="username">Username</string>
+    <string name="username">Email Address</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="create_account">Create Account</string>
@@ -81,4 +81,6 @@
 
     <string name="error_max_barcos">⚠️ You cannot add more ships</string>
     <string name="empty_text"></string>
+    <string name="game_history">History</string>
+    <string name="achievements_title">Achievements</string>
 </resources>

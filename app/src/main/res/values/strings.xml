@@ -51,7 +51,7 @@
 
     <string name="login_subtitle">Inicia sesión para continuar</string>
 
-    <string name="login_user">Usuario</string>
+    <string name="login_user">Correo electrónico</string>
     <string name="login_password">Contraseña</string>
 
     <string name="login_button">Entrar</string>
@@ -65,7 +65,7 @@
 
     <string name="register_title">📝 Crear nueva cuenta</string>
     <string name="full_name">Nombre completo</string>
-    <string name="username">Nombre de usuario</string>
+    <string name="username">Correo electrónico</string>
     <string name="password">Contraseña</string>
     <string name="confirm_password">Confirmar contraseña</string>
     <string name="create_account">Crear cuenta</string>
@@ -82,6 +82,8 @@
     <string name="fallos">Fallos</string>
 
     <string name="btn_pausar">Pausar</string>
+    <string name="game_history">Historial</string>
+    <string name="achievements_title">Logros</string>
 
 
 </resources>

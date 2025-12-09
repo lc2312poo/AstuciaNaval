@@ -34,7 +34,7 @@ fun HomeScreen(navController: NavController) {
     val welcome = stringResource(id = R.string.home_welcome)
     val subtitle = stringResource(id = R.string.home_subtitle)
     val play = stringResource(id = R.string.home_play)
-    val profile = stringResource(id = R.string.home_profile)
+    val settings = stringResource(id = R.string.home_profile) // Re-using home_profile for settings
 
     val infiniteTransition = rememberInfiniteTransition(label = "waveAnimation")
     val waveOffset by infiniteTransition.animateFloat(
@@ -146,7 +146,7 @@ fun HomeScreen(navController: NavController) {
                             .width(220.dp)
                             .height(55.dp)
                     ) {
-                        Text(profile, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
+                        Text(settings, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
                     }
                 }
             }

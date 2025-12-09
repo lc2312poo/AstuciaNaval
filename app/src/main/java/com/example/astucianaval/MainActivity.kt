@@ -28,6 +28,8 @@ import com.example.astucianaval.ui.screens.tablero.TableroScreen
 import com.example.astucianaval.ui.screens.registro.RegistroScreen
 import com.example.astucianaval.ui.screens.pausa.PausaScreen
 import com.example.astucianaval.ui.screens.home.HomeScreen
+import com.example.astucianaval.ui.screens.historial.HistorialScreen
+import com.example.astucianaval.ui.screens.achievements.AchievementsScreen
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.astucianaval.viewmodel.TableroViewModel
@@ -178,6 +180,12 @@ fun AppNavigation() {
                     }
                 }
             )
+        }
+        composable(NavRoutes.Historial.route) {
+            HistorialScreen(navController)
+        }
+        composable(NavRoutes.Achievements.route) {
+            AchievementsScreen(navController)
         }
 
 

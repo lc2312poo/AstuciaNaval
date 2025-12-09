@@ -76,16 +76,22 @@ fun AjustesScreen(navController: NavController) {
                         colors = CardDefaults.cardColors(containerColor = Color(0xFF1976D2))
                     ) {
                         Column(Modifier.padding(16.dp)) {
-                            Text(
-                                text = stringResource(R.string.history_title),
-                                color = Color.White,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 18.sp
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(text = stringResource(R.string.match_1), color = Color.White)
-                            Text(text = stringResource(R.string.match_2), color = Color.White)
-                            Text(text = stringResource(R.string.match_3), color = Color.White)
+                            Button(onClick = { navController.navigate(NavRoutes.Historial.route) }) {
+                                Text(stringResource(R.string.history_title))
+                            }
+                        }
+                    }
+                }
+
+                item {
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFF1976D2))
+                    ) {
+                        Column(Modifier.padding(16.dp)) {
+                            Button(onClick = { navController.navigate(NavRoutes.Achievements.route) }) {
+                                Text(stringResource(R.string.achievements_title))
+                            }
                         }
                     }
                 }

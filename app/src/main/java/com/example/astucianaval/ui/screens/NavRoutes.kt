@@ -15,4 +15,6 @@ sealed class NavRoutes(val route: String) {
     object Pausa : NavRoutes("pausa")
     object Ganar : NavRoutes("ganar")
     object Perder : NavRoutes("perder")
+    object Historial : NavRoutes("historial")
+    object Achievements : NavRoutes("achievements")
 }
