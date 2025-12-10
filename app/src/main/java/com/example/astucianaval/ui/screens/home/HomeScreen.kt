@@ -25,10 +25,16 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.astucianaval.R
 import com.example.astucianaval.ui.screens.NavRoutes
+import com.example.astucianaval.viewmodel.HistorialViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, historialViewModel: HistorialViewModel) {
+
+    // This resets the master lock in the ViewModel whenever the user returns to the main menu.
+    LaunchedEffect(Unit) {
+        historialViewModel.resetGameResultSubmission()
+    }
 
     val title = stringResource(id = R.string.app_title)
     val welcome = stringResource(id = R.string.home_welcome)

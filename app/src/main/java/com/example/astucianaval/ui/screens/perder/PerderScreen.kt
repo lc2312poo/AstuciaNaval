@@ -14,17 +14,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.astucianaval.R
+import com.example.astucianaval.ui.screens.NavRoutes
 import com.example.astucianaval.viewmodel.HistorialViewModel
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
 @Composable
 fun PerderScreen(
-    onVolverInicio: () -> Unit,
-    historialViewModel: HistorialViewModel = viewModel()
+    navController: NavController,
+    historialViewModel: HistorialViewModel
 ) {
+    // The ViewModel's internal lock will prevent duplicate submissions.
     LaunchedEffect(Unit) {
         historialViewModel.addGameRecord("Derrota")
     }
@@ -50,7 +52,11 @@ fun PerderScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            Button(onClick = onVolverInicio) {
+            Button(onClick = {
+                navController.navigate(NavRoutes.Home.route) {
+                    popUpTo(NavRoutes.Home.route) { inclusive = true }
+                }
+            }) {
                 Text(stringResource(R.string.back_to_home))
             }
         }

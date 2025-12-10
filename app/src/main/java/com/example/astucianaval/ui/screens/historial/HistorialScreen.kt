@@ -21,6 +21,7 @@ import androidx.navigation.NavHostController
 import com.example.astucianaval.R
 import com.example.astucianaval.viewmodel.GameRecord
 import com.example.astucianaval.viewmodel.HistorialViewModel
+import com.example.astucianaval.viewmodel.HistoryUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,23 +29,16 @@ fun HistorialScreen(
     navController: NavHostController,
     viewModel: HistorialViewModel = viewModel()
 ) {
-    val history by viewModel.historyState.collectAsState()
+    val uiState by viewModel.historyState.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.fetchHistory()
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Brush.verticalGradient(listOf(Color(0xFF001F3F), Color(0xFF003F7F))))
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+    Scaffold(
+        topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.game_history), color = Color.White) },
+                title = { Text(stringResource(R.string.history_title), color = Color.White) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
@@ -52,19 +46,37 @@ fun HistorialScreen(
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
             )
-
-            if (history.isEmpty()) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("No hay historial de partidas.", color = Color.White, fontSize = 18.sp)
+        },
+        containerColor = Color(0xFF001F3F)
+    ) { padding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .background(Brush.verticalGradient(listOf(Color(0xFF001F3F), Color(0xFF003F7F)))),
+            contentAlignment = Alignment.Center
+        ) {
+            when (val state = uiState) {
+                is HistoryUiState.Loading -> {
+                    CircularProgressIndicator()
                 }
-            } else {
-                LazyColumn(
-                    modifier = Modifier.padding(16.dp)
-                ) {
-                    items(history) { record ->
-                        GameHistoryItem(record)
-                        Spacer(modifier = Modifier.height(8.dp))
+                is HistoryUiState.Success -> {
+                    if (state.records.isEmpty()) {
+                        Text("No hay historial de partidas.", color = Color.White, fontSize = 18.sp)
+                    } else {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            contentPadding = PaddingValues(16.dp)
+                        ) {
+                            items(state.records) { record ->
+                                GameHistoryItem(record)
+                                Spacer(modifier = Modifier.height(8.dp))
+                            }
+                        }
                     }
+                }
+                is HistoryUiState.Error -> {
+                    Text(state.message, color = Color.Red, fontSize = 18.sp)
                 }
             }
         }

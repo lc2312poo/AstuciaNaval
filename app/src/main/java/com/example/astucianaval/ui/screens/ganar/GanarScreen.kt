@@ -1,5 +1,6 @@
 package com.example.astucianaval.ui.screens.ganar
 
+import android.widget.Toast
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -11,24 +12,37 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.astucianaval.R
+import com.example.astucianaval.ui.screens.NavRoutes
 import com.example.astucianaval.viewmodel.HistorialViewModel
-import kotlin.random.Random
+import kotlinx.coroutines.flow.collectLatest
 import kotlin.math.PI
 import kotlin.math.sin
+import kotlin.random.Random
 
 @Composable
 fun GanarScreen(
-    onVolverInicio: () -> Unit,
-    historialViewModel: HistorialViewModel = viewModel()
+    navController: NavController,
+    historialViewModel: HistorialViewModel
 ) {
+    val context = LocalContext.current
+
+    // The ViewModel's internal lock will prevent duplicate submissions.
     LaunchedEffect(Unit) {
         historialViewModel.addGameRecord("Victoria")
+    }
+
+    // Listens for achievement toasts.
+    LaunchedEffect(key1 = historialViewModel.achievementUnlocked) {
+        historialViewModel.achievementUnlocked.collectLatest { achievement ->
+            Toast.makeText(context, "¡Logro desbloqueado: $achievement!", Toast.LENGTH_LONG).show()
+        }
     }
 
     val winTitle = stringResource(id = R.string.win_title)
@@ -52,7 +66,11 @@ fun GanarScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            Button(onClick = onVolverInicio) {
+            Button(onClick = {
+                navController.navigate(NavRoutes.Home.route) {
+                    popUpTo(NavRoutes.Home.route) { inclusive = true }
+                }
+            }) {
                 Text(backToHome)
             }
         }
