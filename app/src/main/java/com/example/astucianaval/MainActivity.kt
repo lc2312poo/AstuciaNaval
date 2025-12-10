@@ -51,11 +51,57 @@ class MainActivity : ComponentActivity() {
             NotificationHelper.createChannel(this)
         }
 
+        // Pedir permiso para notificaciones en Android 13+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 101)
+        }
+
+        programarNotificacion(
+            triggerDelayMillis = 10_000L,
+            requestCode = 100,
+            message = "¡Es hora de jugar! Bienvenido de nuevo, capitán 😎🚢"
+        )
+
         setContent {
             AppTheme {
                 AppNavigation()
             }
         }
+    }
+
+    private fun programarNotificacion(
+        triggerDelayMillis: Long = 10_000L,
+        requestCode: Int = 0,
+        message: String = "¡Es hora de jugar! Bienvenido de nuevo, capitán 😎🚢"
+    ) {
+        val intent = Intent(this, AlarmReceiver::class.java)
+        intent.putExtra("msg", message)
+
+        val pendingIntent = PendingIntent.getBroadcast(
+            this,
+            requestCode,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val triggerTime = System.currentTimeMillis() + triggerDelayMillis
+
+        alarmManager.set(
+            AlarmManager.RTC_WAKEUP,
+            triggerTime,
+            pendingIntent
+        )
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        programarNotificacion(
+            triggerDelayMillis = 5_000L,
+            requestCode = 200,
+            message = "Vuelve, no te vayas aún, capitán :("
+        )
     }
 }
 
