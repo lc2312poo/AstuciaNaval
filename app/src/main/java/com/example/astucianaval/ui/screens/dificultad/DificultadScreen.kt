@@ -156,24 +156,6 @@ fun DificultadScreen(
                             fontWeight = FontWeight.SemiBold
                         )
                     }
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Button(
-                        onClick = { navController.navigate(NavRoutes.ColocarBarcos.route) },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0D47A1)),
-                        shape = RoundedCornerShape(12.dp),
-                        modifier = Modifier
-                            .width(230.dp)
-                            .height(55.dp)
-                    ) {
-                        Text(
-                            stringResource(R.string.difficulty_local),
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = Color.White
-                        )
-                    }
                 }
             }
         }
